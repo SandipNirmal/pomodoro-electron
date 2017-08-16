@@ -1,0 +1,34 @@
+{
+  "name": "pomodoro",
+  "productName": "Pomodoro productivity app",
+  "version": "0.0.1",
+  "description": "Productivity App Using pomodoro technique",
+  "author": "Sandip Nirmal <sandipnirmal@icloud.com>",
+  "homepage": "https://sandipnirmal.github.io/CountDownTimer",
+  "license": "ISC",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron app.js",
+    "pack": "build --dir",
+    "dist": "build"
+  },
+  "build": {
+    "appId": "com.electron.pomodoro",
+    "productName": "Pomodoro App",
+    "linux": {
+      "target": [
+        "deb"
+      ],
+      "icon": "./icons",
+      "category": "productivity"
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "./favicon.ico"
+    }
+  },
+  "devDependencies": {
+    "electron": "^1.4.12",
+    "electron-builder": "^19.22.1"
+  }
+}
