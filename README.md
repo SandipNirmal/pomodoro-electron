@@ -1,2 +1,2 @@
 # pomodoro-electron
-Pomodoro app using electron
+Distributions for Pomodoro app
