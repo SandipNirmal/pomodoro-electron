@@ -19,6 +19,7 @@ electron.app.once('ready', () => {
         height: 320,
         titleBarStyle: 'hidden',
         resizable: false,
+        maximizable: false,
         // Set the default background color of the window to match the CSS
         // background color of the page, this prevents any white flickering
         backgroundColor: "#111",
@@ -36,18 +37,28 @@ electron.app.once('ready', () => {
 
     // Show window when page is ready
     app.window.once('ready-to-show', () => {
-        app.window.show()
+        showApp()
+        app.window.focus()
     })
 
     // Handle close event
     app.window.on('close', (e) => {
         e.preventDefault();
-        hideApp();
+        hideApp()
     })
 
     // Handle maximize event
     app.window.on('maximize', (e) => {
         e.preventDefault();
+        app.window.setResizable(false);
+        console.log('maximize');
+    })
+
+    // Handle maximize event
+    app.window.on('resize', (e) => {
+        e.preventDefault();
+        app.window.setResizable(false);
+        console.log('Resize');
     })
 
     // initialise tray 
@@ -77,13 +88,12 @@ function createTrayIcon() {
     updateTrayMenu()
 }
 
-
 function showApp() {
     app.window.show();
 }
 
 function hideApp() {
-    app.window.hide();
+    app.window.minimize();
 }
 
 /**
@@ -91,9 +101,12 @@ function hideApp() {
  */
 function updateTrayMenu() {
     const contextMenu = Menu.buildFromTemplate([
-        { label: 'Hide to tray', click: hideApp },
+        { label: 'Hide', click: hideApp },
         { label: 'Show', click: showApp },
-        { label: 'Quit', click: () => app.window.destroy() }
+        { label: 'Quit', click: () => {
+            app.window.destroy();
+            app.window = null;
+         }}
     ])
 
     trayIcon.setContextMenu(contextMenu)

@@ -1,7 +1,7 @@
 {
   "name": "pomodoro",
   "productName": "Pomodoro productivity app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Productivity App Using pomodoro technique",
   "author": "Sandip Nirmal <sandipnirmal@icloud.com>",
   "homepage": "https://sandipnirmal.github.io/CountDownTimer",
