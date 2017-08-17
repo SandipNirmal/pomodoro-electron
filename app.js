@@ -1,13 +1,20 @@
+const app = module.exports = {
+    window: null
+}
+
 const electron = require('electron')
 const path = require('path')
 const url = require('url')
 
-let window = null
+const Tray = electron.Tray
+const Menu = electron.Menu
+
+// let window = null
 
 // Wait until the app is ready
-electron.app.once('ready', function () {
+electron.app.once('ready', () => {
     // Create a new window
-    window = new electron.BrowserWindow({
+    app.window = new electron.BrowserWindow({
         width: 400,
         height: 320,
         titleBarStyle: 'hidden',
@@ -21,15 +28,73 @@ electron.app.once('ready', function () {
     })
 
     // Load a URL in the window to the local index.html path
-    window.loadURL(url.format({
+    app.window.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
         slashes: true
     }))
 
     // Show window when page is ready
-    window.once('ready-to-show', function () {
-        window.show()
+    app.window.once('ready-to-show', () => {
+        app.window.show()
     })
 
+    // Handle close event
+    app.window.on('close', (e) => {
+        e.preventDefault();
+        hideApp();
+    })
+
+    // Handle maximize event
+    app.window.on('maximize', (e) => {
+        e.preventDefault();
+    })
+
+    // initialise tray 
+    initTray()
 })
+
+/**
+ * Initialise tray creation
+ */
+function initTray() {
+    // OS X has no tray icon
+    if (process.platform === 'darwin') return
+
+    createTrayIcon()
+}
+
+/**
+ * Function to create tray icon for app
+ */
+function createTrayIcon() {
+    trayIcon = new Tray(path.join(__dirname, 'icons', '32x32.png'))
+
+    // On Windows, left click to open the app, right click for context menu
+    // On Linux, any click (right or left) opens the context menu
+    trayIcon.on('click', showApp)
+
+    updateTrayMenu()
+}
+
+
+function showApp() {
+    app.window.show();
+}
+
+function hideApp() {
+    app.window.hide();
+}
+
+/**
+ * Shows options on tray icon
+ */
+function updateTrayMenu() {
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Hide to tray', click: hideApp },
+        { label: 'Show', click: showApp },
+        { label: 'Quit', click: () => app.window.destroy() }
+    ])
+
+    trayIcon.setContextMenu(contextMenu)
+}
