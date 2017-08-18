@@ -9,6 +9,8 @@ const url = require('url')
 const Tray = electron.Tray
 const Menu = electron.Menu
 
+let trayIcon;
+
 // let window = null
 
 // Wait until the app is ready
@@ -103,10 +105,13 @@ function updateTrayMenu() {
     const contextMenu = Menu.buildFromTemplate([
         { label: 'Hide', click: hideApp },
         { label: 'Show', click: showApp },
-        { label: 'Quit', click: () => {
-            app.window.destroy();
-            app.window = null;
-         }}
+        {
+            label: 'Quit', click: () => {
+                app.window.destroy();
+                trayIcon.destroy()
+                app.window = null;
+            }
+        }
     ])
 
     trayIcon.setContextMenu(contextMenu)
