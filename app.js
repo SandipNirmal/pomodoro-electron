@@ -17,8 +17,8 @@ let trayIcon;
 electron.app.once('ready', () => {
     // Create a new window
     app.window = new electron.BrowserWindow({
-        width: 400,
-        height: 320,
+        width: 320,
+        height: 480,
         titleBarStyle: 'hidden',
         resizable: false,
         maximizable: false,
